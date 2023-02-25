@@ -3,6 +3,7 @@ package args
 import (
 	"fmt"
 	"github.com/spf13/viper"
+	"path/filepath"
 )
 
 type Args struct {
@@ -13,9 +14,11 @@ type Args struct {
 	DB   string
 }
 
-func ParseArgs(filename string, filepath string) Args {
-	viper.AddConfigPath(filepath)
-	viper.SetConfigName(filename)
+func ParseArgs(filename string, path string) Args {
+	//viper.AddConfigPath(path)
+	//viper.SetConfigName(filename)
+	fullPath := filepath.Join(path, filename)
+	viper.SetConfigFile(fullPath)
 	err := viper.ReadInConfig() // Find and read the config file
 	if err != nil {             // Handle errors reading the config file
 		panic(fmt.Errorf("fatal error config file: %w", err))

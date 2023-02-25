@@ -30,7 +30,7 @@ type application struct {
 }
 
 func main() {
-	progArgs := args.ParseArgs("config", ".")
+	progArgs := args.ParseArgs("config.yml", ".")
 	var dbConf = mysql.Config{
 		User:                 progArgs.User,
 		Passwd:               progArgs.Pwd,

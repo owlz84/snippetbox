@@ -18,7 +18,7 @@ import (
 
 func NewTestApplication(t *testing.T) *application {
 
-	testArgs := args.ParseArgs()
+	testArgs := args.ParseArgs("config.yml", "../../")
 
 	templateCache, err := newTemplateCache()
 	if err != nil {

@@ -8,22 +8,6 @@ import (
 	"testing"
 )
 
-//	type application struct {
-//		errorLog       *log.Logger
-//		infoLog        *log.Logger
-//		databaseConfig *mysql.Config
-//	}
-//
-//	func newTestApp(t *testing.T) *application {
-//		testArgs := main.ParseArgs()
-//
-//		return &application{
-//
-//			errorLog:       log.New(io.Discard, "", 0),
-//			infoLog:        log.New(io.Discard, "", 0),
-//		}
-//	}
-
 func newTestDB(t *testing.T) *sql.DB {
 	// Establish a sql.DB connection pool for our test database. Because our
 	// setup and teardown scripts contains multiple SQL statements, we need
