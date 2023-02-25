@@ -54,3 +54,7 @@ func PermittedValue[T comparable](value T, permittedValues ...T) bool {
 func Matches(value string, rx *regexp.Regexp) bool {
 	return rx.MatchString(value)
 }
+
+func IsEqual(a string, b string) bool {
+	return a == b
+}
