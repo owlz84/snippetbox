@@ -3,6 +3,7 @@ package main
 import (
 	"crypto/tls"
 	"database/sql"
+	"flag"
 	"github.com/alexedwards/scs/mysqlstore"
 	"github.com/alexedwards/scs/v2"
 	"github.com/go-playground/form/v4"
@@ -27,17 +28,24 @@ type application struct {
 	formDecoder    *form.Decoder
 	sessionManager *scs.SessionManager
 	databaseConfig *mysql.Config
+	debugMode      bool
+}
+
+func isDebugMode() bool {
+	debug := flag.Bool("debug", false, "Enable debugging mode?")
+	flag.Parse()
+	return *debug
 }
 
 func main() {
 	progArgs := config.ParseArgs("config.yml", ".")
 	var dbConf = mysql.Config{
-		User:                 progArgs.User,
-		Passwd:               progArgs.Pwd,
-		Net:                  "tcp",
-		Addr:                 progArgs.Host,
-		DBName:               progArgs.DB,
-		ParseTime:            true,
+		User:   progArgs.User,
+		Passwd: progArgs.Pwd,
+		Net:    "tcp",
+		Addr:   progArgs.Host,
+		DBName: progArgs.DB,
+		//ParseTime:            true,
 		AllowNativePasswords: true,
 	} //dsn := flag.String("dsn", "web:pass@/snippetbox?parseTime=true", "MySQL data source name")
 	dsn := dbConf.FormatDSN()
@@ -72,6 +80,7 @@ func main() {
 		formDecoder:    formDecoder,
 		sessionManager: sessionManager,
 		databaseConfig: &dbConf,
+		debugMode:      isDebugMode(),
 	}
 
 	tlsConfig := &tls.Config{
