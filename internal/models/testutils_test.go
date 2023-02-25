@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"github.com/go-sql-driver/mysql"
 	"os"
-	"snippetbox.stuartlynn.net/internal/args"
+	"snippetbox.stuartlynn.net/internal/config"
 	"testing"
 )
 
@@ -14,7 +14,7 @@ func newTestDB(t *testing.T) *sql.DB {
 	// to use the "multiStatements=true" parameter in our DSN. This instructs
 	// our MySQL database driver to support executing multiple SQL statements
 	// in one db.Exec() call
-	testArgs := args.ParseArgs("config_test.yml", "../../")
+	testArgs := config.ParseArgs("config_test.yml", "../../")
 
 	var databaseConfig mysql.Config
 	databaseConfig.User = testArgs.User
