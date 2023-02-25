@@ -22,3 +22,6 @@ go.work
 
 # configuration files
 *.yml
+
+# keys and certs
+tls/
