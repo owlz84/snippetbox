@@ -40,12 +40,12 @@ func isDebugMode() bool {
 func main() {
 	progArgs := config.ParseArgs("config.yml", ".")
 	var dbConf = mysql.Config{
-		User:   progArgs.User,
-		Passwd: progArgs.Pwd,
-		Net:    "tcp",
-		Addr:   progArgs.Host,
-		DBName: progArgs.DB,
-		//ParseTime:            true,
+		User:                 progArgs.User,
+		Passwd:               progArgs.Pwd,
+		Net:                  "tcp",
+		Addr:                 progArgs.Host,
+		DBName:               progArgs.DB,
+		ParseTime:            true,
 		AllowNativePasswords: true,
 	} //dsn := flag.String("dsn", "web:pass@/snippetbox?parseTime=true", "MySQL data source name")
 	dsn := dbConf.FormatDSN()

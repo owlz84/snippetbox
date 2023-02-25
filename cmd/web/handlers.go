@@ -8,6 +8,7 @@ import (
 	"snippetbox.stuartlynn.net/internal/models"
 	"snippetbox.stuartlynn.net/internal/validator"
 	"strconv"
+	"time"
 )
 
 type snippetCreateForm struct {
@@ -28,6 +29,12 @@ type userLoginForm struct {
 	Email               string `form:"email"`
 	Password            string `form:"password"`
 	validator.Validator `form:"-"`
+}
+
+type accountViewForm struct {
+	Name   string    `form:"name"`
+	Email  string    `form:"email"`
+	Joined time.Time `form:"joined"`
 }
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
@@ -217,6 +224,30 @@ func (app *application) userLogoutPost(w http.ResponseWriter, r *http.Request) {
 	app.sessionManager.Remove(r.Context(), "authenticatedUserID")
 	app.sessionManager.Put(r.Context(), "flash", "You've been logged out successfully!")
 	http.Redirect(w, r, "/", http.StatusSeeOther)
+}
+
+func (app *application) accountView(w http.ResponseWriter, r *http.Request) {
+	id := app.sessionManager.GetInt(r.Context(), "authenticatedUserID")
+	user, err := app.users.Get(id)
+	if user == nil {
+
+		http.Redirect(w, r, "/snippet/create", http.StatusSeeOther)
+	}
+	if err != nil {
+		if errors.Is(err, models.ErrNoRecord) {
+			http.Redirect(w, r, "/user/login", http.StatusSeeOther)
+		} else {
+			app.serverError(w, err)
+		}
+	}
+	data := app.newTemplateData(r)
+	data.Form = accountViewForm{
+		Name:   user.Name,
+		Email:  user.Email,
+		Joined: user.Created,
+	}
+	app.render(w, http.StatusOK, "account.tmpl", data)
+	//fmt.Fprintf(w, "%+v", user)
 }
 
 func ping(w http.ResponseWriter, r *http.Request) {
