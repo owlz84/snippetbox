@@ -10,7 +10,7 @@ import (
 	"net/http"
 	"net/http/cookiejar"
 	"net/http/httptest"
-	"snippetbox.stuartlynn.net/internal/args"
+	"snippetbox.stuartlynn.net/internal/config"
 	"snippetbox.stuartlynn.net/internal/models/mocks"
 	"testing"
 	"time"
@@ -18,7 +18,7 @@ import (
 
 func NewTestApplication(t *testing.T) *application {
 
-	testArgs := args.ParseArgs("config.yml", "../../")
+	testArgs := config.ParseArgs("config.yml", "../../")
 
 	templateCache, err := newTemplateCache()
 	if err != nil {

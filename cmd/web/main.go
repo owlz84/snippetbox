@@ -12,7 +12,7 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"snippetbox.stuartlynn.net/internal/args"
+	"snippetbox.stuartlynn.net/internal/config"
 	"snippetbox.stuartlynn.net/internal/models"
 	"strconv"
 	"time"
@@ -30,7 +30,7 @@ type application struct {
 }
 
 func main() {
-	progArgs := args.ParseArgs("config.yml", ".")
+	progArgs := config.ParseArgs("config.yml", ".")
 	var dbConf = mysql.Config{
 		User:                 progArgs.User,
 		Passwd:               progArgs.Pwd,
