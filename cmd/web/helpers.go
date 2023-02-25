@@ -50,8 +50,11 @@ func (app *application) render(w http.ResponseWriter, status int, page string, d
 func (app *application) serverError(w http.ResponseWriter, err error) {
 	trace := fmt.Sprintf("%s\n%s", err.Error(), debug.Stack())
 	app.errorLog.Output(2, trace)
-
+	if app.debugMode {
+		http.Error(w, trace, http.StatusInternalServerError)
+	}
 	http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+
 }
 
 // The clientError helper sends a specific status code and corresponding description
