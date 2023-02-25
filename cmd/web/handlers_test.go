@@ -84,6 +84,37 @@ func TestSnippetView(t *testing.T) {
 		})
 	}
 }
+
+func TestSnippetCreate(t *testing.T) {
+	app := NewTestApplication(t)
+	ts := newTestServer(t, app.routes())
+	defer ts.Close()
+	t.Run("Unauthenticated", func(t *testing.T) {
+		urlPath := "/snippet/create"
+		wantCode := http.StatusSeeOther
+		wantHeader := "/user/login"
+		code, header, _ := ts.get(t, urlPath)
+
+		assert.Equal(t, code, wantCode)
+		assert.StringContains(t, header.Get("Location"), wantHeader)
+	})
+	t.Run("Authenticated", func(t *testing.T) {
+		loginUrlPath := "/user/login"
+		var loginValues = url.Values{}
+		loginValues.Add("email", "alice@example.com")
+		loginValues.Add("password", "pa$$word")
+		ts.postForm(t, loginUrlPath, loginValues)
+
+		urlPath := "/snippet/create"
+		wantCode := http.StatusOK
+		wantBody := "<form action='/snippet/create' method='POST'>"
+		code, _, body := ts.get(t, urlPath)
+
+		assert.Equal(t, code, wantCode)
+		assert.StringContains(t, body, wantBody)
+	})
+}
+
 func TestUserSignup(t *testing.T) {
 	app := NewTestApplication(t)
 	ts := newTestServer(t, app.routes())
